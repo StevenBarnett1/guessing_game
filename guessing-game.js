@@ -9,9 +9,14 @@ let randomInRange = (min, max) => {
 	return Math.round(Math.random() * (max - min) + min);
 };
 
-let secretNumber = randomInRange(1, 50);
+let askRange = () => {
+    rl.question("Enter a min and max separated with a space: ", answer => {
+        askGuess(randomInRange(...answer.split(" ").map(x => Number(x))))
+    })
 
-let checkGuess = (num) => {
+}
+
+let checkGuess = (num,secretNumber) => {
 	if (num > secretNumber) {
 		console.log('Too High');
 		return false;
@@ -24,10 +29,11 @@ let checkGuess = (num) => {
 	}
 };
 
-let askGuess = () => {
+let askGuess = (secretNumber) => {
 	rl.question('Enter A Guess: ', (answer) => {
-		if (!checkGuess(Number(answer))) askGuess();
+		if (!checkGuess(Number(answer),secretNumber)) askGuess(secretNumber);
 		else rl.close();
 	});
 };
-askGuess();
+
+askRange()
